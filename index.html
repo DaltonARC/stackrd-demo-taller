@@ -118,7 +118,7 @@ input:focus{outline:none;border-color:var(--amarillo)}
 .tot{display:flex;justify-content:space-between;align-items:baseline;border-top:2px dashed #999;margin-top:12px;padding-top:12px;font-family:var(--cond);text-transform:uppercase;font-size:20px}
 .tot b{font-size:40px}
 .ticket .btn{width:100%;justify-content:center;margin-top:18px;background:var(--carbon);color:var(--amarillo)}
-.ticket .btn[aria-disabled=true]{opacity:.35;pointer-events:none}
+.ticket button.btn{border:0;cursor:pointer}.ticket .btn:disabled{opacity:.35;cursor:not-allowed}.ferr{color:#b3001b;font-size:14px;font-weight:600;margin-top:6px}.ferr:empty{display:none}
 .ticket small{display:block;color:#555;font-size:12.5px;margin-top:10px;text-align:center}
 /* ubicacion */
 .ubic{display:grid;grid-template-columns:1fr 1fr;gap:0;border:2px solid var(--acero);min-width:0}.ubic>*{min-width:0}
@@ -265,7 +265,7 @@ footer a{color:var(--amarillo)}
       <h4>Tu cotización</h4>
       <div id="lineas"><div class="lin vacio">Aún no has elegido servicios.</div></div>
       <div class="tot"><span>Estimado</span><b id="total">RD$0</b></div>
-      <a class="btn" id="enviar" target="_blank" rel="noopener" aria-disabled="true">Enviar por WhatsApp</a>
+      <button type="button" class="btn" id="enviar" disabled>Enviar por WhatsApp</button>
       <div id="ecf"></div>
       <small>Precio estimado. Puede variar según el diagnóstico.</small>
     </aside>
@@ -278,7 +278,7 @@ footer a{color:var(--amarillo)}
 <form id="fcita" novalidate>
 <div><label for="f-nombre">Tu nombre</label><input id="f-nombre" name="nombre" autocomplete="name" required></div>
 <div><label for="f-serv">Servicio</label><select id="f-serv" name="servicio" required><option value="">Elige uno</option><option value="Cambio de aceite">Cambio de aceite (desde RD$2,200)</option><option value="Frenos delanteros">Frenos delanteros (desde RD$3,500)</option><option value="Diagnóstico con escáner">Diagnóstico con escáner (desde RD$1,200)</option><option value="Alineación y balanceo">Alineación y balanceo (desde RD$1,500)</option><option value="Carga de aire acondicionado">Carga de aire acondicionado (desde RD$2,800)</option><option value="Afinamiento">Afinamiento (desde RD$4,500)</option><option value="Cambio de batería">Cambio de batería (desde RD$6,500)</option><option value="Lavado completo">Lavado completo (desde RD$650)</option></select></div>
-<div><label for="f-fecha">Fecha</label><input id="f-fecha" name="fecha" type="date" required></div>
+<div><label for="f-fecha">Fecha</label><input id="f-fecha" name="fecha" type="date" required aria-describedby="f-fecha-err"><p class="ferr" id="f-fecha-err" role="alert"></p></div>
 <div><label for="f-hora">Hora</label><select id="f-hora" name="hora" required><option value="">Elige la hora</option><option value="8:00 a.m.">8:00 a.m.</option><option value="8:30 a.m.">8:30 a.m.</option><option value="9:00 a.m.">9:00 a.m.</option><option value="9:30 a.m.">9:30 a.m.</option><option value="10:00 a.m.">10:00 a.m.</option><option value="10:30 a.m.">10:30 a.m.</option><option value="11:00 a.m.">11:00 a.m.</option><option value="11:30 a.m.">11:30 a.m.</option><option value="12:00 p.m.">12:00 p.m.</option><option value="12:30 p.m.">12:30 p.m.</option><option value="1:00 p.m.">1:00 p.m.</option><option value="1:30 p.m.">1:30 p.m.</option><option value="2:00 p.m.">2:00 p.m.</option><option value="2:30 p.m.">2:30 p.m.</option><option value="3:00 p.m.">3:00 p.m.</option><option value="3:30 p.m.">3:30 p.m.</option><option value="4:00 p.m.">4:00 p.m.</option><option value="4:30 p.m.">4:30 p.m.</option><option value="5:00 p.m.">5:00 p.m.</option></select></div>
 <button type="submit">Agendar por WhatsApp</button>
 <p class="nota">Se abre WhatsApp con tu mensaje listo. Esta es una demostración de un negocio ficticio.</p>
@@ -335,9 +335,10 @@ function upd(){
   const tot=sel.reduce((a,s)=>a+s[1]*f,0);document.getElementById('total').textContent=fmt(tot);
   const m=document.getElementById('marca').value.trim(),y=document.getElementById('anio').value.trim();
   ECF.refresh();
-  const b=document.getElementById('enviar');b.setAttribute('aria-disabled',sel.length?'false':'true');
-  b.href=wa(`Hola, quiero cotizar:\nVehículo: ${veh}${m?' · '+m:''}${y?' · '+y:''}\nServicios:\n${sel.map(s=>'• '+s[0]+' ('+fmt(s[1]*f)+')').join('\n')}\nEstimado: ${fmt(tot)}`);
+  const b=document.getElementById('enviar');b.disabled=!(sel.length&&tot>0);
+  b.dataset.enlace=wa(`Hola, quiero cotizar:\nVehículo: ${veh}${m?' · '+m:''}${y?' · '+y:''}\nServicios:\n${sel.map(s=>'• '+s[0]+' ('+fmt(s[1]*f)+')').join('\n')}\nEstimado: ${fmt(tot)}`);
 }
+document.getElementById('enviar').onclick=e=>{const b=e.currentTarget;if(!b.disabled)window.open(b.dataset.enlace,'_blank','noopener')};
 upd();
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
@@ -345,6 +346,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 <div class="credito">Demo creada por <a href="https://daltonarc.github.io/stackrd-web/" target="_blank" rel="noopener">StackRD</a></div>
 <a class="wa-float" data-wa="Hola, quiero información." href="https://wa.me/18293390257?text=%5BDEMO%20Rueda%20Firme%5D%20Hola%2C%20quiero%20informaci%C3%B3n." target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.6l-.4-.3-3.8 1.2 1.2-3.7-.3-.4a10.4 10.4 0 0 1-1.7-5.8C5.1 9.9 10 5.2 16 5.2s10.9 4.7 10.9 10.6S22 26.4 16 26.4zm6-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.7s1.2 3.2 1.4 3.4c.2.2 2.4 3.6 5.8 5 .8.4 1.4.6 1.9.7.8.3 1.6.2 2.2.1.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg></a>
 
+<script>(function(){var i=document.getElementById('f-fecha'),e=document.getElementById('f-fecha-err');function v(){var m=i.value&&new Date(i.value+'T12:00:00').getDay()===0?'Atendemos de lunes a sábado. Elige otro día.':'';i.setCustomValidity(m);e.textContent=m;i.setAttribute('aria-invalid',m?'true':'false')}i.addEventListener('input',v);i.addEventListener('change',v);document.getElementById('fcita').addEventListener('submit',v)})();</script>
 <script>formWa(document.getElementById('fcita'),function(d){var p=d.fecha.split('-');var f=p[2]+'/'+p[1]+'/'+p[0];return 'Hola, quiero agendar una cita: '+d.servicio+', el '+f+' a las '+d.hora+' A nombre de '+d.nombre+'.';});</script>
 </body>
 </html>
