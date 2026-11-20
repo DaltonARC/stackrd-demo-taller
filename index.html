@@ -55,7 +55,7 @@ h1 span{color:var(--amarillo);display:block}
 .acc{display:flex;gap:16px;flex-wrap:wrap}
 .panel{background:var(--carbon2);border:1px solid var(--acero);padding:28px;position:relative}
 .panel::before{content:"";position:absolute;inset:-1px -1px auto auto;width:60px;height:60px;background:var(--amarillo);clip-path:polygon(100% 0,0 0,100% 100%)}
-.panel h3{font-family:var(--cond);text-transform:uppercase;font-size:24px;margin-bottom:14px}
+.panel h2{font-family:var(--cond);text-transform:uppercase;font-size:24px;margin-bottom:14px}
 .horas div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--acero);font-size:15.5px}
 .horas b{font-weight:600}
 .estado{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:14px;color:var(--gris)}
@@ -95,8 +95,8 @@ section{padding:100px 0}
 /* cotizador */
 .cot{display:grid;grid-template-columns:1.25fr .75fr;gap:36px;align-items:start}
 .paso{margin-bottom:30px}
-.paso h4{font-family:var(--cond);text-transform:uppercase;font-size:20px;letter-spacing:1px;margin-bottom:12px;display:flex;gap:10px;align-items:center}
-.paso h4 b{background:var(--amarillo);color:#111;width:28px;height:28px;display:grid;place-items:center}
+.paso h3{font-family:var(--cond);text-transform:uppercase;font-size:20px;letter-spacing:1px;margin-bottom:12px;display:flex;gap:10px;align-items:center}
+.paso h3 b{background:var(--amarillo);color:#111;width:28px;height:28px;display:grid;place-items:center}
 .vehs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .veh{background:var(--carbon2);border:2px solid var(--acero);color:var(--blanco);padding:16px 8px;cursor:pointer;font:inherit;font-family:var(--cond);font-size:18px;text-transform:uppercase;display:grid;justify-items:center;gap:8px;transition:all .2s}
 .veh svg{width:46px;height:30px}
@@ -114,12 +114,12 @@ input:focus{outline:none;border-color:var(--amarillo)}
 .ticket::after{content:"";display:block;height:14px;margin:22px -28px -28px;background:radial-gradient(circle at 10px -4px,transparent 12px,var(--blanco) 13px) -10px 0/20px 14px repeat-x;background-color:var(--carbon)}
 .ticket h4{font-family:var(--cond);text-transform:uppercase;font-size:26px;border-bottom:3px solid var(--carbon);padding-bottom:10px;margin-bottom:14px}
 .lin{display:flex;justify-content:space-between;font-size:15px;padding:5px 0}
-.lin.vacio{color:#888}
+.lin.vacio{color:#555}
 .tot{display:flex;justify-content:space-between;align-items:baseline;border-top:2px dashed #999;margin-top:12px;padding-top:12px;font-family:var(--cond);text-transform:uppercase;font-size:20px}
 .tot b{font-size:40px}
 .ticket .btn{width:100%;justify-content:center;margin-top:18px;background:var(--carbon);color:var(--amarillo)}
 .ticket .btn[aria-disabled=true]{opacity:.35;pointer-events:none}
-.ticket small{display:block;color:#777;font-size:12.5px;margin-top:10px;text-align:center}
+.ticket small{display:block;color:#555;font-size:12.5px;margin-top:10px;text-align:center}
 /* ubicacion */
 .ubic{display:grid;grid-template-columns:1fr 1fr;gap:0;border:2px solid var(--acero);min-width:0}.ubic>*{min-width:0}
 .ubic>div{padding:40px}
@@ -209,7 +209,7 @@ footer a{color:var(--amarillo)}
     <div class="acc"><a class="btn" href="#cotizar">Cotizar mi servicio</a><a class="btn out" href="#lavado">Ver lavados</a></div>
   </div>
   <div class="panel rv">
-    <h3>Horario</h3>
+    <h2>Horario</h2>
     <div class="horas">
       <div><b>Lunes a viernes</b><span>7:30 a.m. – 6:00 p.m.</span></div>
       <div><b>Sábado</b><span>7:30 a.m. – 3:00 p.m.</span></div>
@@ -248,7 +248,7 @@ footer a{color:var(--amarillo)}
   <div class="cab rv"><span class="num">03</span><h2>Cotiza en<br>un minuto</h2><p>Selecciona tu vehículo y lo que necesita. El precio es estimado; te lo confirmamos al revisar.</p></div>
   <div class="cot">
     <div>
-      <div class="paso"><h4><b>1</b>Tipo de vehículo</h4>
+      <div class="paso"><h3><b>1</b>Tipo de vehículo</h3>
         <div class="vehs" id="vehs">
           <button type="button" class="veh on" data-f="1" data-n="Carro"><svg viewBox="0 0 64 32" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 22h56v-6l-10-4-8-8H22l-10 8-8 2z"/><circle cx="18" cy="24" r="5"/><circle cx="46" cy="24" r="5"/></svg>Carro</button>
           <button type="button" class="veh" data-f="1.2" data-n="Jeepeta"><svg viewBox="0 0 64 32" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 22h56V10l-8-6H14l-8 8-2 2z"/><circle cx="18" cy="24" r="5"/><circle cx="46" cy="24" r="5"/></svg>Jeepeta</button>
@@ -256,10 +256,10 @@ footer a{color:var(--amarillo)}
           <button type="button" class="veh" data-f=".6" data-n="Motor"><svg viewBox="0 0 64 32" fill="none" stroke="currentColor" stroke-width="3"><circle cx="14" cy="22" r="7"/><circle cx="50" cy="22" r="7"/><path d="M14 22l12-12h10l14 12M30 10l-4-6h-6"/></svg>Motor</button>
         </div>
       </div>
-      <div class="paso"><h4><b>2</b>Tu vehículo</h4>
+      <div class="paso"><h3><b>2</b>Tu vehículo</h3>
         <div class="campos"><input type="text" id="marca" placeholder="Marca y modelo, ej. Toyota Corolla" aria-label="Marca y modelo"><input type="number" id="anio" placeholder="Año, ej. 2015" min="1980" max="2030" aria-label="Año"></div>
       </div>
-      <div class="paso"><h4><b>3</b>Servicios</h4><div class="checks" id="checks"></div></div>
+      <div class="paso"><h3><b>3</b>Servicios</h3><div class="checks" id="checks"></div></div>
     </div>
     <aside class="ticket" aria-live="polite">
       <h4>Tu cotización</h4>
